@@ -1,7 +1,11 @@
 const bcrypt = require('bcryptjs');
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
+// const config = require('../config/default.json');
 
 const Users = require('../users/users-model.js');
+
+router.use('/restricted', protected);
 
 router.post('/register', (req, res) => {
 	// const credentials = req.body;
@@ -43,6 +47,15 @@ router.post('/login', (req, res) => {
 		});
 });
 
+router.get('/users', protected, async (req, res) => {
+	try {
+		const users = await Users.find();
+		res.status(200).json(users);
+	} catch (error) {
+		res.status(500).json(error);
+	}
+});
+
 router.get('/logout', (req, res) => {
 	if (req.session) {
 		req.session.destroy((error) => {
@@ -58,4 +71,12 @@ router.get('/logout', (req, res) => {
 		res.status(200).json({ message: 'already logged out' });
 	}
 });
+
+function protected(req, res, next) {
+	if (req.session && req.session.userId) {
+		next();
+	} else {
+		res.status(401).json({ message: 'You shall not pass!' });
+	}
+}
 module.exports = router;

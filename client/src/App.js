@@ -10,6 +10,12 @@ import Alerts from './components/layout/Alerts';
 import PrivateRoute from './components/routing/PrivateRoute';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
+import Navbar from './components/layout/Navbar';
+import setAuthToken from './utils/setAuthtoken';
+
+if (localStorage.token) {
+	setAuthToken(localStorage.token);
+}
 
 function App() {
 	return (
@@ -17,6 +23,7 @@ function App() {
 			<AlertState>
 				<Router>
 					<Fragment>
+						<Navbar />
 						<div className='container'>
 							<Alerts />
 							<Switch>
