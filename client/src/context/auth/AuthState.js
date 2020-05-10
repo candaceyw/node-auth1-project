@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import AuthContext from './authContext';
 import authReducer from './authReducer';
-import setAuthToken from '../../utils/setAuthtoken';
+
 import {
 	REGISTER_SUCCESS,
 	REGISTER_FAIL,
@@ -16,7 +16,6 @@ import {
 
 const AuthState = (props) => {
 	const initialState = {
-		token: localStorage.getItem('token'),
 		isAuthenticated: null,
 		loading: true,
 		user: null,
@@ -26,17 +25,26 @@ const AuthState = (props) => {
 	const [state, dispatch] = useReducer(authReducer, initialState);
 
 	// Load User
-	const loadUser = async () => {
-		if (localStorage.token) {
-			setAuthToken(localStorage.token);
-		}
+	const loadUser = async (formData) => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+
 		try {
-			const res = await axios.get(`http://localhost:4000/api/auth/login`);
+			const res = await axios.get(
+				`http://localhost:4000/api/auth/users`,
+				formData,
+				config
+			);
+			console.log('testing', res);
 
 			dispatch({
 				type: USER_LOADED,
 				payload: res.data,
 			});
+			loadUser();
 		} catch (err) {
 			dispatch({ type: AUTH_ERROR });
 		}
@@ -108,7 +116,7 @@ const AuthState = (props) => {
 	return (
 		<AuthContext.Provider
 			value={{
-				token: state.token,
+				// token: state.token,
 				isAuthenticated: state.isAuthenticated,
 				loading: state.loading,
 				user: state.user,

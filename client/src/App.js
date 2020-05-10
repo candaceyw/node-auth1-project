@@ -27,7 +27,7 @@ function App() {
 						<div className='container'>
 							<Alerts />
 							<Switch>
-								<PrivateRoute exact path='/' component={Home} />
+								<PrivateRoute exact path='/home' component={Home} />
 								<Route exact path='/register' component={Register} />
 								<Route exact path='/login' component={Login} />
 							</Switch>
