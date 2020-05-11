@@ -30,12 +30,13 @@ const AuthState = (props) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
+			withCredentials: true,
 		};
 
 		try {
 			const res = await axios.get(
-				`http://localhost:4000/api/auth/users`,
-				formData,
+				`http://localhost:4000/api/users`,
+				// formData,
 				config
 			);
 			console.log('testing', res);
@@ -84,6 +85,7 @@ const AuthState = (props) => {
 			headers: {
 				'Content-Type': 'application/json',
 			},
+			withCredentials: true,
 		};
 
 		try {

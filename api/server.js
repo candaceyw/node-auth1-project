@@ -18,12 +18,14 @@ const sessionConfig = {
 		httpOnly: true, // true means no access from JS
 	},
 	resave: false,
-	saveUninitialized: true, // GDPR laws require to check with client
+	saveUninitialized: false, // GDPR laws require to check with client
 };
 
 server.use(helmet());
+
 server.use(express.json());
 server.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+
 server.use(session(sessionConfig));
 
 server.use('/api/users', restricted, usersRouter);

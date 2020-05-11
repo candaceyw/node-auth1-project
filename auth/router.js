@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const Users = require('../users/users-model.js');
 
-router.use('/restricted', protected);
+// router.use('/restricted', protected);
 
 router.post('/register', (req, res) => {
 	// const credentials = req.body;
